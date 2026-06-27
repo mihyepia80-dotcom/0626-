@@ -4,78 +4,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>바이브 코딩 - Vibe Coding</title>
+    <title>AI 윤리 탐험대 — 생성형 AI 가이드 게임</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="logo">Vibe Coding.</div>
-        <ul class="nav-links">
-            <li><a href="#overview">개요</a></li>
-            <li><a href="#features">특징</a></li>
-        </ul>
-    </nav>
+    <div class="game-app">
+        <!-- 시작 화면 -->
+        <section id="screen-start" class="screen active">
+            <div class="start-card">
+                <div class="mascot">🤖</div>
+                <h1 class="game-title">AI 윤리 탐험대</h1>
+                <p class="game-subtitle">생성형 AI를 똑똑하고 안전하게 쓰는<br>6가지 미션에 도전해 보세요!</p>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">코딩, 이제 느낌대로.</h1>
-            <p class="hero-subtitle">완전히 새로운 차원의 개발 경험.<br>바이브 코딩이 시작됩니다.</p>
-        </div>
-        <div class="hero-image-placeholder">
-            <div class="glow-orb"></div>
-        </div>
-    </section>
-
-    <section id="overview" class="section dark-section">
-        <div class="content-wrapper text-center">
-            <h2 class="section-title">손끝에서 완성되는 상상.</h2>
-            <p class="section-text">
-                복잡한 타이핑은 잊으세요. 당신의 아이디어와 리듬에 맞춰<br>
-                AI가 완벽한 코드를 직조해냅니다.
-            </p>
-        </div>
-    </section>
-
-    <section id="features" class="section">
-        <div class="content-wrapper">
-            <h2 class="section-title text-center" style="margin-bottom: 4rem;">모든 것이 자연스럽게.</h2>
-            <div class="grid-features">
-                <div class="feature-card">
-                    <h3 class="feature-title">Fast.</h3>
-                    <p class="feature-text">생각하는 속도 그대로. 지연 없는 즉각적인 코드 생성을 경험하세요.</p>
+                <div class="value-preview">
+                    <div class="value-chip initiative"><span class="chip-icon">🧠</span> 주도성</div>
+                    <div class="value-chip purpose"><span class="chip-icon">🎯</span> 합목적성</div>
+                    <div class="value-chip safety"><span class="chip-icon">🛡️</span> 안전성</div>
+                    <div class="value-chip transparency"><span class="chip-icon">✨</span> 투명성</div>
                 </div>
-                <div class="feature-card">
-                    <h3 class="feature-title">Intuitive.</h3>
-                    <p class="feature-text">설명서가 필요 없습니다. 당신이 원하는 것을 자연스럽게 이야기하세요.</p>
+
+                <button class="btn-primary btn-large" id="btn-start">탐험 시작!</button>
+            </div>
+        </section>
+
+        <!-- 미션 맵 -->
+        <section id="screen-map" class="screen">
+            <header class="game-header">
+                <h2>미션 맵</h2>
+                <div class="badge-bar" id="badge-bar">
+                    <span class="badge-slot" data-value="initiative" title="주도성">🧠</span>
+                    <span class="badge-slot" data-value="purpose" title="합목적성">🎯</span>
+                    <span class="badge-slot" data-value="safety" title="안전성">🛡️</span>
+                    <span class="badge-slot" data-value="transparency" title="투명성">✨</span>
                 </div>
-                <div class="feature-card">
-                    <h3 class="feature-title">Creative.</h3>
-                    <p class="feature-text">문법에 얽매이지 않고, 오직 문제 해결과 창의적인 아이디어에만 집중하세요.</p>
+            </header>
+
+            <div class="progress-wrap">
+                <div class="progress-label">미션 진행 <span id="progress-text">0 / 6</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <footer>
-        <p>&copy; 2026 Vibe Coding. Designed with feeling.</p>
-    </footer>
+            <div class="mission-map" id="mission-map"></div>
+
+            <button class="btn-secondary" id="btn-to-finish" hidden>결과 보기 🏆</button>
+        </section>
+
+        <!-- 미션 플레이 -->
+        <section id="screen-mission" class="screen">
+            <header class="mission-header">
+                <button class="btn-back" id="btn-back-map" aria-label="맵으로">←</button>
+                <div class="mission-info">
+                    <span class="mission-num" id="mission-num">미션 1</span>
+                    <span class="mission-values" id="mission-values"></span>
+                </div>
+            </header>
+
+            <div class="mission-card">
+                <h3 class="mission-title" id="mission-title"></h3>
+                <p class="mission-guide" id="mission-guide"></p>
+
+                <div class="scenario-box" id="scenario-box">
+                    <span class="scenario-label">📖 상황</span>
+                    <p id="scenario-text"></p>
+                </div>
+
+                <div class="question-area" id="question-area"></div>
+
+                <div class="feedback-box" id="feedback-box" hidden>
+                    <div class="feedback-icon" id="feedback-icon"></div>
+                    <p id="feedback-text"></p>
+                    <button class="btn-primary" id="btn-next-mission">다음으로 →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 완료 화면 -->
+        <section id="screen-finish" class="screen">
+            <div class="finish-card">
+                <div class="finish-trophy">🏆</div>
+                <h2>탐험 완료!</h2>
+                <p class="finish-msg">6가지 AI 윤리 가이드를 모두 배웠어요.<br>앞으로도 똑똑하고 정직하게 AI를 활용해 보세요!</p>
+
+                <div class="guide-summary" id="guide-summary"></div>
+
+                <div class="earned-badges" id="earned-badges"></div>
+
+                <button class="btn-primary btn-large" id="btn-restart">다시 도전하기</button>
+            </div>
+        </section>
+    </div>
 
     <script>
-        // Simple fade-in animation on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+        const CORE_VALUES = {
+            initiative: { name: '주도성', icon: '🧠', class: 'initiative' },
+            purpose: { name: '합목적성', icon: '🎯', class: 'purpose' },
+            safety: { name: '안전성', icon: '🛡️', class: 'safety' },
+            transparency: { name: '투명성', icon: '✨', class: 'transparency' }
+        };
 
-        document.querySelectorAll('.section-title, .section-text, .feature-card, .hero-content').forEach((el) => {
-            observer.observe(el);
-            el.classList.add('fade-up');
+        const MISSIONS = [
+            {
+                id: 1,
+                title: '활용 목적',
+                values: ['initiative', 'purpose'],
+                guide: '생성형 AI를 사용하기 전에 \'왜\' 사용하는지 말할 수 있어야 해요.',
+                detail: 'AI는 생각을 대신하는 것이 아니라, 생각을 도와주는 도구예요. 모든 공부에 AI가 필요한 것은 아니에요.',
+                scenario: '숙제로 "우리 동네 환경 보호 방법" 글쓰기를 해야 해요. AI를 쓰기 전에 무엇을 먼저 해야 할까요?',
+                type: 'choice',
+                options: [
+                    { text: '"글쓰기 연습과 내 생각 정리를 위해 쓸 거야"라고 목적을 말한 뒤 시작한다', correct: true },
+                    { text: '바로 AI에게 글 전체를 써 달라고 부탁한다', correct: false },
+                    { text: '친구 숙제를 AI로 만들어서 복사한다', correct: false }
+                ],
+                correctFeedback: '맞아요! AI를 쓰기 전에 "왜 쓰는지" 생각하면 더 좋은 학습이 돼요.',
+                wrongFeedback: 'AI를 쓰기 전에 목적을 먼저 생각해 보세요. AI는 생각을 도와주는 도구예요!'
+            },
+            {
+                id: 2,
+                title: '주도적 학습',
+                values: ['initiative'],
+                guide: '생성형 AI에게 묻기 전에, 먼저 내 생각을 말해 보세요.',
+                detail: '막히면 AI에게 바로 물어보고 싶지만, 먼저 스스로 해보면 더 크게 성장할 수 있어요.',
+                scenario: '수학 문제가 어려워서 AI에게 바로 물어보려고 해요. 어떻게 하면 좋을까요?',
+                type: 'choice',
+                options: [
+                    { text: '공책에 내가 아는 것과 생각을 먼저 적어 본다', correct: true },
+                    { text: 'AI에게 정답만 바로 알려 달라고 한다', correct: false },
+                    { text: '문제를 보지도 않고 AI에게 풀이를 맡긴다', correct: false }
+                ],
+                correctFeedback: '훌륭해요! 먼저 내 생각을 적어 보면 AI의 도움도 더 잘 이해할 수 있어요.',
+                wrongFeedback: 'AI에게 묻기 전에, 공책에 내 생각을 먼저 적어 보는 습관을 길러 보세요!'
+            },
+            {
+                id: 3,
+                title: '비판적 검증',
+                values: ['initiative'],
+                guide: '생성형 AI가 틀릴 수 있다는 것을 알아요.',
+                detail: 'AI는 가끔 틀린 정보를 사실처럼 말해요. "정말 맞을까?"라고 확인하는 습관이 중요해요.',
+                scenario: 'AI가 "고래는 물고기이다"라고 알려줬어요. 어떻게 해야 할까요?',
+                type: 'choice',
+                options: [
+                    { text: '"정말 맞을까?" 하고 책이나 선생님께 다시 확인한다', correct: true },
+                    { text: 'AI가 알려줬으니까 무조건 맞다고 믿는다', correct: false },
+                    { text: '친구에게도 틀린 정보를 그대로 알려준다', correct: false }
+                ],
+                correctFeedback: '정답! AI 답변은 항상 "정말 맞을까?" 하고 확인해 보세요.',
+                wrongFeedback: 'AI는 틀릴 수 있어요. 책이나 선생님께 꼭 다시 확인해 보세요!'
+            },
+            {
+                id: 4,
+                title: '사고의 확장',
+                values: ['initiative', 'purpose'],
+                guide: '생성형 AI와 함께 상상하고, 생각을 더 크게 키워 보세요.',
+                detail: 'AI 결과를 그대로 쓰지 말고, 내 경험과 생각을 더해서 나만의 결과물을 만들어 보세요.',
+                scenario: 'AI가 "우주 여행 이야기" 초안을 만들어 줬어요. 어떻게 활용하면 좋을까요?',
+                type: 'choice',
+                options: [
+                    { text: '내가 본 영화·책 경험을 더해서 이야기를 나만의 색깔로 바꾼다', correct: true },
+                    { text: 'AI가 쓴 글을 그대로 복사해서 제출한다', correct: false },
+                    { text: 'AI 결과를 한 글자도 바꾸지 않는다', correct: false }
+                ],
+                correctFeedback: '멋져요! AI와 함께 상상하고, 내 생각을 더하면 더 특별한 결과물이 돼요.',
+                wrongFeedback: 'AI 결과에 내 경험과 생각을 더해 보세요. 그게 진짜 나만의 작품이에요!'
+            },
+            {
+                id: 5,
+                title: '안전과 관계',
+                values: ['safety'],
+                guide: '내 정보와 비밀은 말하지 않아요.',
+                detail: '이름, 주소, 학교, 전화번호 같은 개인정보는 AI에게 절대 알려주면 안 돼요. AI는 감정이 없어요. 고민은 친구·부모님·선생님과 이야기해요.',
+                scenario: 'AI 챗봇과 대화할 때, 아래 중 AI에게 말해도 괜찮은 것은 무엇일까요?',
+                type: 'choice',
+                options: [
+                    { text: '"용이 나오는 판타지 이야기를 만들어 줘"', correct: true },
+                    { text: '"내 이름은 김민수이고 ○○초등학교 4학년이야"', correct: false },
+                    { text: '"우리 집 주소는 ○○시 ○○구 ○○로 123번이야"', correct: false }
+                ],
+                correctFeedback: '잘했어요! 개인정보는 AI에게 말하지 않아요. 창작 아이디어는 괜찮아요.',
+                wrongFeedback: '이름, 학교, 주소 같은 개인정보는 AI에게 절대 말하면 안 돼요!'
+            },
+            {
+                id: 6,
+                title: '투명성·윤리',
+                values: ['transparency'],
+                guide: '생성형 AI의 도움을 받았다면, 숨기지 말고 솔직하게 말해요.',
+                detail: 'AI가 도와준 부분과 내가 한 부분을 분명히 말하는 것이 정직한 태도예요. 솔직할수록 내 노력이 더 빛나요.',
+                scenario: '발표 준비할 때 AI가 자료 정리를 도와줬어요. 발표할 때 어떻게 하는 게 좋을까요?',
+                type: 'choice',
+                options: [
+                    { text: '"자료 정리는 AI가 도와줬고, 발표 내용은 내가 만들었어요"라고 솔직히 말한다', correct: true },
+                    { text: 'AI 도움은 받았지만, 전부 내가 혼자 한 것처럼 말한다', correct: false },
+                    { text: 'AI 사용 사실을 숨기고 발표한다', correct: false }
+                ],
+                correctFeedback: '정직해요! AI 도움을 솔직히 말하면, 내 노력이 더 빛나요.',
+                wrongFeedback: 'AI 도움을 받았다면 솔직하게 말하는 것이 올바른 태도예요!'
+            }
+        ];
+
+        const GUIDE_SUMMARY = [
+            { num: 1, title: '활용 목적', text: 'AI를 쓰기 전 "왜 쓰는지" 말할 수 있어야 해요.' },
+            { num: 2, title: '주도적 학습', text: 'AI에게 묻기 전, 내 생각을 먼저 말해 보세요.' },
+            { num: 3, title: '비판적 검증', text: 'AI가 틀릴 수 있으니 꼭 확인해요.' },
+            { num: 4, title: '사고의 확장', text: 'AI와 함께 상상하고 내 생각을 더해요.' },
+            { num: 5, title: '안전과 관계', text: '개인정보와 비밀은 AI에게 말하지 않아요.' },
+            { num: 6, title: '투명성·윤리', text: 'AI 도움을 받았다면 솔직하게 말해요.' }
+        ];
+
+        let completedMissions = new Set();
+        let earnedValues = new Set();
+        let currentMissionId = null;
+
+        const screens = {
+            start: document.getElementById('screen-start'),
+            map: document.getElementById('screen-map'),
+            mission: document.getElementById('screen-mission'),
+            finish: document.getElementById('screen-finish')
+        };
+
+        function showScreen(name) {
+            Object.values(screens).forEach(s => s.classList.remove('active'));
+            screens[name].classList.add('active');
+        }
+
+        function renderMissionMap() {
+            const map = document.getElementById('mission-map');
+            map.innerHTML = MISSIONS.map(m => {
+                const done = completedMissions.has(m.id);
+                const valueTags = m.values.map(v => {
+                    const cv = CORE_VALUES[v];
+                    return `<span class="value-tag ${cv.class}">${cv.icon}</span>`;
+                }).join('');
+                return `
+                    <button class="mission-node ${done ? 'completed' : ''}" data-id="${m.id}">
+                        <span class="node-num">${done ? '✓' : m.id}</span>
+                        <span class="node-title">${m.title}</span>
+                        <span class="node-values">${valueTags}</span>
+                    </button>
+                `;
+            }).join('');
+
+            map.querySelectorAll('.mission-node').forEach(btn => {
+                btn.addEventListener('click', () => openMission(Number(btn.dataset.id)));
+            });
+
+            const count = completedMissions.size;
+            document.getElementById('progress-text').textContent = `${count} / 6`;
+            document.getElementById('progress-fill').style.width = `${(count / 6) * 100}%`;
+            document.getElementById('btn-to-finish').hidden = count < 6;
+
+            document.querySelectorAll('.badge-slot').forEach(slot => {
+                slot.classList.toggle('earned', earnedValues.has(slot.dataset.value));
+            });
+        }
+
+        function openMission(id) {
+            currentMissionId = id;
+            const m = MISSIONS.find(x => x.id === id);
+
+            document.getElementById('mission-num').textContent = `미션 ${m.id}`;
+            document.getElementById('mission-values').innerHTML = m.values.map(v => {
+                const cv = CORE_VALUES[v];
+                return `<span class="value-tag ${cv.class}">${cv.icon} ${cv.name}</span>`;
+            }).join('');
+            document.getElementById('mission-title').textContent = m.title;
+            document.getElementById('mission-guide').textContent = m.guide;
+            document.getElementById('scenario-text').textContent = m.scenario;
+
+            const questionArea = document.getElementById('question-area');
+            const feedbackBox = document.getElementById('feedback-box');
+            feedbackBox.hidden = true;
+            questionArea.hidden = false;
+
+            questionArea.innerHTML = `
+                <p class="question-prompt">👇 가장 좋은 선택은?</p>
+                <div class="options-list">
+                    ${m.options.map((opt, i) => `
+                        <button class="option-btn" data-index="${i}">${opt.text}</button>
+                    `).join('')}
+                </div>
+            `;
+
+            questionArea.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', () => handleAnswer(Number(btn.dataset.index)));
+            });
+
+            showScreen('mission');
+        }
+
+        function handleAnswer(index) {
+            const m = MISSIONS.find(x => x.id === currentMissionId);
+            const chosen = m.options[index];
+            const isCorrect = chosen.correct;
+
+            document.querySelectorAll('.option-btn').forEach((btn, i) => {
+                btn.disabled = true;
+                if (m.options[i].correct) btn.classList.add('correct');
+                else if (i === index) btn.classList.add('wrong');
+            });
+
+            const feedbackBox = document.getElementById('feedback-box');
+            document.getElementById('feedback-icon').textContent = isCorrect ? '🎉' : '💡';
+            document.getElementById('feedback-text').textContent = isCorrect ? m.correctFeedback : m.wrongFeedback;
+            feedbackBox.className = `feedback-box ${isCorrect ? 'success' : 'hint'}`;
+            feedbackBox.hidden = false;
+
+            if (isCorrect) {
+                completedMissions.add(currentMissionId);
+                m.values.forEach(v => earnedValues.add(v));
+            }
+        }
+
+        function renderFinish() {
+            const summary = document.getElementById('guide-summary');
+            summary.innerHTML = GUIDE_SUMMARY.map(g => `
+                <div class="summary-item">
+                    <span class="summary-num">${g.num}</span>
+                    <div>
+                        <strong>${g.title}</strong>
+                        <p>${g.text}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            const badges = document.getElementById('earned-badges');
+            badges.innerHTML = Object.entries(CORE_VALUES).map(([key, cv]) => `
+                <div class="earned-badge ${earnedValues.has(key) ? 'earned' : 'locked'}">
+                    <span class="badge-icon">${cv.icon}</span>
+                    <span class="badge-name">${cv.name}</span>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('btn-start').addEventListener('click', () => {
+            renderMissionMap();
+            showScreen('map');
+        });
+
+        document.getElementById('btn-back-map').addEventListener('click', () => {
+            renderMissionMap();
+            showScreen('map');
+        });
+
+        document.getElementById('btn-next-mission').addEventListener('click', () => {
+            renderMissionMap();
+            if (completedMissions.size >= 6) {
+                renderFinish();
+                showScreen('finish');
+            } else {
+                showScreen('map');
+            }
+        });
+
+        document.getElementById('btn-to-finish').addEventListener('click', () => {
+            renderFinish();
+            showScreen('finish');
+        });
+
+        document.getElementById('btn-restart').addEventListener('click', () => {
+            completedMissions = new Set();
+            earnedValues = new Set();
+            currentMissionId = null;
+            showScreen('start');
         });
     </script>
 </body>
