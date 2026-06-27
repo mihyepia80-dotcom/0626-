@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습지원 SW 체크리스트 — AI 윤리 탐험대</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="legal.css">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <style>
+        .check-badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.8rem; font-weight: 800; }
+        .check-badge.pass { background: var(--green-light); color: #00695c; border: 1.5px solid var(--green); }
+        .check-badge.partial { background: var(--gold-light); color: #e65100; border: 1.5px solid var(--gold); }
+        .check-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin: 1.5rem 0; }
+        .check-summary-card { background: var(--white); border: 3px solid var(--border); border-radius: 16px; padding: 1rem; text-align: center; box-shadow: 4px 4px 0 var(--border); }
+        .check-summary-card strong { display: block; font-size: 1.5rem; color: var(--green); }
+        .opinion-box { background: #f5f5f5; border: 2px dashed var(--border); border-radius: 14px; padding: 1rem 1.25rem; font-family: inherit; white-space: pre-wrap; line-height: 1.7; font-weight: 600; font-size: 0.95rem; }
+    </style>
+</head>
+
+<body>
+    <main class="legal-page">
+        <header class="legal-header">
+            <a class="legal-back" href="index.html">← AI 윤리 탐험대로 돌아가기</a>
+            <h1>학습지원 소프트웨어 체크리스트</h1>
+            <p class="legal-meta">AI 윤리 탐험대 · 학운위 심의·선정 기준 충족 현황</p>
+        </header>
+
+        <div class="check-summary">
+            <div class="check-summary-card"><strong>6/6</strong>필수기준</div>
+            <div class="check-summary-card"><strong>5/5</strong>선택기준</div>
+            <div class="check-summary-card"><strong>7/7</strong>웹 구현</div>
+        </div>
+
+        <article class="legal-body">
+            <h2>1. 소프트웨어 개요</h2>
+            <table>
+                <tr><th>제품명</th><td>AI 윤리 탐험대</td></tr>
+                <tr><th>유형</th><td>교사 개발 학습지원 웹 애플리케이션</td></tr>
+                <tr><th>대상</th><td>초등학생</td></tr>
+                <tr><th>이용</th><td>무료 · 회원가입 없음 · 웹 브라우저</td></tr>
+            </table>
+
+            <h2>2. 심의 대상 해당 여부</h2>
+            <table>
+                <tr><th>조건</th><th>해당</th><th>설명</th></tr>
+                <tr><td>개인정보 처리</td><td><span class="check-badge partial">△</span></td><td>개인정보 미수집 (선정·심의 권장)</td></tr>
+                <tr><td>교과 성취기준 연계 콘텐츠</td><td><span class="check-badge pass">✅</span></td><td>AI·디지털 윤리 교육 콘텐츠 포함</td></tr>
+            </table>
+
+            <h2>3. 필수기준</h2>
+            <table>
+                <tr><th>No.</th><th>항목</th><th>충족</th></tr>
+                <tr><td>1</td><td>개인정보 최소처리 원칙</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>2</td><td>개인정보 안전조치 의무</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>3</td><td>열람·정정·삭제·처리정지 절차</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>4</td><td>만 14세 미만 아동 보호</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>5</td><td>개인정보 보호책임자 지정</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>6</td><td>제3자 제공·위탁 고지</td><td><span class="check-badge pass">✅</span></td></tr>
+            </table>
+
+            <h2>4. 선택기준</h2>
+            <table>
+                <tr><th>No.</th><th>항목</th><th>충족</th></tr>
+                <tr><td>1</td><td>교육목표·학생 특성 적합성</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>2</td><td>콘텐츠 품질·안전성</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>3</td><td>사용 환경 적합성</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>4</td><td>접근성·사용성</td><td><span class="check-badge pass">✅</span></td></tr>
+                <tr><td>5</td><td>서비스 운영·지원체계</td><td><span class="check-badge pass">✅</span></td></tr>
+            </table>
+
+            <h2>5. 학운위 제출용 의견서 (예시)</h2>
+            <div class="opinion-box">제품명: AI 윤리 탐험대
+기준 충족: 필수기준 6항목 / 선택기준 5항목 충족
+추천 의견: 초등 AI·디지털 윤리 교육용 무료 웹앱으로, 개인정보를 수집하지 않으며
+생성형 AI 윤리 가이드를 게임형으로 학습할 수 있어 교육과정 운영에 적합하므로 선정함.</div>
+
+            <h2>6. 증빙 자료</h2>
+            <ul>
+                <li><a href="개인정보처리방침.html">개인정보처리방침</a></li>
+                <li><a href="이용약관.html">이용약관</a></li>
+                <li><a href="index.html">웹앱 (AI 윤리 탐험대)</a></li>
+                <li><a href="학습지원소프트웨어_체크리스트.md">체크리스트 전문 (Markdown)</a></li>
+            </ul>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-copy">© 2026 AI 윤리 탐험대. All rights reserved.</p>
+        <p class="footer-links">
+            <a href="이용약관.html">이용약관</a>
+            <span>|</span>
+            <a href="개인정보처리방침.html">개인정보처리방침</a>
+            <span>|</span>
+            <a href="학습지원소프트웨어_체크리스트.html">체크리스트</a>
+        </p>
+        <p class="footer-contact">
+            개인정보책임자: [담당 교사 성명] ([소속 학교명]) | 문의: [학교 교무실 연락처]
+        </p>
+    </footer>
+</body>
+
+</html>

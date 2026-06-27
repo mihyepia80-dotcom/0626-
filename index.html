@@ -12,8 +12,55 @@
 
 <body>
     <div class="game-app">
+        <!-- 개인정보 동의 -->
+        <section id="screen-consent" class="screen active">
+            <div class="consent-card">
+                <div class="consent-icon">🛡️</div>
+                <h1 class="consent-title">서비스 이용 안내</h1>
+                <p class="consent-intro">
+                    AI 윤리 탐험대를 이용하기 전에<br>
+                    아래 내용을 확인하고 동의해 주세요.
+                </p>
+
+                <div class="consent-notice">
+                    <p>본 서비스는 <strong>개인정보를 수집하지 않습니다.</strong></p>
+                    <p>게임 진행 기록은 브라우저를 닫으면 사라집니다.</p>
+                </div>
+
+                <div class="consent-checks">
+                    <label class="consent-label">
+                        <input type="checkbox" id="check-policy">
+                        <span class="consent-text">
+                            <strong>(필수)</strong>
+                            <a href="#" class="open-legal" data-doc="privacy">개인정보처리방침</a>에
+                            동의합니다.
+                        </span>
+                    </label>
+                    <label class="consent-label">
+                        <input type="checkbox" id="check-terms">
+                        <span class="consent-text">
+                            <strong>(필수)</strong>
+                            <a href="#" class="open-legal" data-doc="terms">이용약관</a>에
+                            동의합니다.
+                        </span>
+                    </label>
+                    <label class="consent-label">
+                        <input type="checkbox" id="check-guardian">
+                        <span class="consent-text">
+                            <strong>(필수)</strong>
+                            (만 14세 미만인 경우) 학교 가정통신문 등을 통해
+                            <strong>보호자 동의</strong>를 완료하였습니다.
+                        </span>
+                    </label>
+                </div>
+
+                <p class="consent-hint" id="consent-hint" hidden>위 항목을 모두 체크해야 시작할 수 있어요.</p>
+                <button class="btn-primary btn-large" id="btn-consent" disabled>동의하고 시작하기</button>
+            </div>
+        </section>
+
         <!-- 시작 화면 -->
-        <section id="screen-start" class="screen active">
+        <section id="screen-start" class="screen">
             <div class="start-card">
                 <div class="mascot">🤖</div>
                 <h1 class="game-title">AI 윤리 탐험대</h1>
@@ -27,6 +74,10 @@
                 </div>
 
                 <button class="btn-primary btn-large" id="btn-start">탐험 시작!</button>
+
+                <div class="terms-notice">
+                    <p>서비스 이용 시 <button type="button" class="link-btn open-legal" data-doc="terms">이용약관</button>이 적용됩니다.</p>
+                </div>
             </div>
         </section>
 
@@ -98,6 +149,36 @@
             </div>
         </section>
     </div>
+
+    <!-- 약관/개인정보 팝업 -->
+    <div class="legal-modal" id="legal-modal" hidden>
+        <div class="legal-modal-backdrop" data-close-modal></div>
+        <div class="legal-modal-panel" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title">
+            <header class="legal-modal-header">
+                <h2 id="legal-modal-title">이용약관</h2>
+                <button type="button" class="legal-modal-close" data-close-modal aria-label="닫기">✕</button>
+            </header>
+            <div class="legal-modal-body" id="legal-modal-body"></div>
+            <footer class="legal-modal-footer">
+                <a class="legal-full-link" id="legal-full-link" href="이용약관.html" target="_blank" rel="noopener">전문 보기 ↗</a>
+                <button type="button" class="btn-primary" data-close-modal>확인</button>
+            </footer>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p class="footer-copy">© 2026 AI 윤리 탐험대. All rights reserved.</p>
+        <p class="footer-links">
+            <button type="button" class="footer-link-btn open-legal" data-doc="terms">이용약관</button>
+            <span>|</span>
+            <button type="button" class="footer-link-btn open-legal" data-doc="privacy">개인정보처리방침</button>
+            <span>|</span>
+            <a class="footer-link-btn" href="학습지원소프트웨어_체크리스트.html">체크리스트</a>
+        </p>
+        <p class="footer-contact">
+            개인정보책임자: [담당 교사 성명] ([소속 학교명]) | 문의: [학교 교무실 연락처]
+        </p>
+    </footer>
 
     <script>
         const CORE_VALUES = {
@@ -220,11 +301,108 @@
         let currentMissionId = null;
 
         const screens = {
+            consent: document.getElementById('screen-consent'),
             start: document.getElementById('screen-start'),
             map: document.getElementById('screen-map'),
             mission: document.getElementById('screen-mission'),
             finish: document.getElementById('screen-finish')
         };
+
+        const checkPolicy = document.getElementById('check-policy');
+        const checkTerms = document.getElementById('check-terms');
+        const checkGuardian = document.getElementById('check-guardian');
+        const btnConsent = document.getElementById('btn-consent');
+        const consentHint = document.getElementById('consent-hint');
+        const legalModal = document.getElementById('legal-modal');
+        const legalModalTitle = document.getElementById('legal-modal-title');
+        const legalModalBody = document.getElementById('legal-modal-body');
+        const legalFullLink = document.getElementById('legal-full-link');
+
+        const LEGAL_CONTENT = {
+            terms: {
+                title: '이용약관',
+                fullUrl: '이용약관.html',
+                html: `
+                    <p>본 서비스는 <strong>무료 교육용</strong> AI 윤리 학습 게임입니다.</p>
+                    <h3>주요 내용</h3>
+                    <ul>
+                        <li>회원가입 없이 누구나 이용할 수 있습니다.</li>
+                        <li>서비스 이용은 무료이며, 교육 목적으로만 제공됩니다.</li>
+                        <li>만 14세 미만은 보호자 동의 후 이용합니다.</li>
+                        <li>게임 콘텐츠 무단 복제·상업적 이용을 금지합니다.</li>
+                        <li>저작권은 서비스 제공자에게 있습니다.</li>
+                    </ul>
+                    <h3>이용자 의무</h3>
+                    <p>허위 정보 등록, 타인 정보 도용, 서비스 방해, 콘텐츠 무단 복제 등은 하지 않아야 합니다.</p>
+                    <p class="legal-modal-date">시행일: 2026년 6월 27일</p>
+                `
+            },
+            privacy: {
+                title: '개인정보처리방침',
+                fullUrl: '개인정보처리방침.html',
+                html: `
+                    <p>본 서비스는 <strong>개인정보를 수집·저장하지 않습니다.</strong></p>
+                    <h3>주요 내용</h3>
+                    <ul>
+                        <li>이름, 연락처, 학교 정보 등을 수집하지 않습니다.</li>
+                        <li>게임 진행 기록은 브라우저 세션에서만 처리됩니다.</li>
+                        <li>회원가입·로그인 기능이 없습니다.</li>
+                        <li>만 14세 미만도 별도 가입 없이 이용할 수 있습니다.</li>
+                    </ul>
+                    <p class="legal-modal-date">시행일: 2026년 6월 27일</p>
+                `
+            }
+        };
+
+        function openLegalModal(doc) {
+            const content = LEGAL_CONTENT[doc];
+            if (!content) return;
+            legalModalTitle.textContent = content.title;
+            legalModalBody.innerHTML = content.html;
+            legalFullLink.href = content.fullUrl;
+            legalFullLink.textContent = `${content.title} 전문 보기 ↗`;
+            legalModal.hidden = false;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLegalModal() {
+            legalModal.hidden = true;
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.open-legal').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                openLegalModal(el.dataset.doc);
+            });
+        });
+
+        legalModal.querySelectorAll('[data-close-modal]').forEach(el => {
+            el.addEventListener('click', closeLegalModal);
+        });
+
+        function updateConsentButton() {
+            const ready = checkPolicy.checked && checkTerms.checked && checkGuardian.checked;
+            btnConsent.disabled = !ready;
+            consentHint.hidden = ready;
+        }
+
+        checkPolicy.addEventListener('change', updateConsentButton);
+        checkTerms.addEventListener('change', updateConsentButton);
+        checkGuardian.addEventListener('change', updateConsentButton);
+
+        document.getElementById('btn-consent').addEventListener('click', () => {
+            sessionStorage.setItem('ai-ethics-consent', 'true');
+            showScreen('start');
+        });
+
+        if (sessionStorage.getItem('ai-ethics-consent') === 'true') {
+            checkPolicy.checked = true;
+            checkTerms.checked = true;
+            checkGuardian.checked = true;
+            updateConsentButton();
+            showScreen('start');
+        }
 
         function showScreen(name) {
             Object.values(screens).forEach(s => s.classList.remove('active'));
@@ -371,6 +549,8 @@
             currentMissionId = null;
             showScreen('start');
         });
+
+        updateConsentButton();
     </script>
 </body>
 
